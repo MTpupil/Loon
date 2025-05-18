@@ -2,7 +2,7 @@
 #!desc= 自己用的重写就放在这里了
 #!author= 木瞳
 #!homepage= https://github.com/MTpupil
-#!icon= 
+#!icon= https://s1.ax1x.com/2022/11/23/z8LIPO.jpg
 #!tag = 木瞳
 
 [Argument]
@@ -27,15 +27,15 @@ http-response ^https?:\/\/www\.yunshangxiezuo\.com\/api\/getAuthenticate_2 scrip
 
 #!notability解锁plus
 #!notability.com
-http-response ^https?:\/\/notability\.com\/(global|subscriptions) script-path=https://raw.githubusercontent.com/MTpupil/qxmine/master/rewrite/js/notability.js, requires-body=true, tag = notability解锁plus
+http-response ^https?:\/\/notability\.com\/(global|subscriptions) script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Rewrite/notability.js, requires-body=true, tag = notability解锁plus
 
 # ssme解锁会员
 # w.5hzs.com
-http-response ^https?:\/\/w\.5hzs\.com\/player\/index scrip-path=https://raw.githubusercontent.com/MTpupil/qxmine/master/rewrite/js/ssme.js, requires-body=true, tag = ssme解锁会员
+http-response ^https?:\/\/w\.5hzs\.com\/player\/index script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Rewrite/ssme.js, requires-body=true, tag = ssme解锁会员
 
 # 千变语音
 # www.voicepackage.xyz
-http-response ^https?:\/\/www\.voicepackage\.xyz\/app\/(main\/account\/index|user\/userProfile|main\/home) script-path=https://raw.githubusercontent.com/MTpupil/qxmine/master/rewrite/js/qianbianyuyin.js, requires-body=true, tag = 千变语音解锁
+http-response ^https?:\/\/www\.voicepackage\.xyz\/app\/(main\/account\/index|user\/userProfile|main\/home) script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Rewrite/qianbianyuyin.js, requires-body=true, tag = 千变语音解锁
 
 [mitm]
 hostname = ap*.intsig.net, *.duitang.com, *.yunshangxiezuo.com, notability.com, hk4e - api.mihoyo.com, w.5hzs.com, www.voicepackage.xyz
