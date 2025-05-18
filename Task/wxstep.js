@@ -4,13 +4,14 @@
  * 
  * 
  */
-let notice = $persistentStore.read("wxstepNotice");
-let user = $persistentStore.read("wxstepUser");
-let pwd = $persistentStore.read("wxstepPwd");
-let wxstepRandom = $persistentStore.read("wxstepRandom");
-let stepMax = $persistentStore.read("wxstepStepMax");
-let stepMin = $persistentStore.read("wxstepStepMin");
-let wxstep = $persistentStore.read("wxstepnum");
+
+let notice = $argument.arg1("wxstepNotice");
+let user = $argument.arg1("wxstepUser");
+let pwd = $argument.arg1("wxstepPwd");
+let wxstepRandom = $argument.arg1("wxstepRandom");
+let stepMax = $argument.arg1("wxstepStepMax");
+let stepMin = $argument.arg1("wxstepStepMin");
+let wxstep = $argument.arg1("wxstepnum");
 
 // 参数校验
 if (!user || !pwd) {

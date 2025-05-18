@@ -7,6 +7,7 @@
 
 
 [Argument]
+cron = input, "0 8 * * * ", tag = 脚本运行定时，不懂不要动
 wxstepUser = input, "", tag = 账号,desc = 请填写账号
 wxstepPwd = input, "", tag = 密码,desc = 请填写密码
 wxstepNotice = switch, true, tag = 通知, desc = 关闭后不再通知程序运行结果
@@ -23,5 +24,5 @@ wxstepStepMin = input, "", tag = 随机步数最小值 , desc = 随机步数的�
 [host]
 
 [script]
-cron "0 8 * * * " script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Task/wxstep.js
+cron "{ cron }" script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Task/wxstep.js, argument = [{ wxstepUser }, { wxstepPwd }, { wxstepNotice }, { wxstepRandom }, { wxstepStepMax }, { wxstepStepMin }, { wxstepnum }]
 [mitm]
