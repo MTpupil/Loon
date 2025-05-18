@@ -4,7 +4,7 @@
  */
 const access = $argument.Access;
 const updata = $argument.data;
-const isMerge = $argument.isMerg; // 是否合并
+const isMerge = $argument.isMerge; // 是否合并
 const isTimeEnabled = $argument.isTimeEnable; // 是否显示时间
 const isForecastEnabled = $argument.isForecastEnable; // 是否开启预计功能
 
