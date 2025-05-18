@@ -12,22 +12,27 @@ const cardNo = "70032342060810";
 
 
 let option = {
-    url: `http://iot-wx.lktweixin.cn/HuaHai/index?cardNo=70032342060810`,
+    url: `http://iot-wx.lktweixin.cn/HuaHai/index?cardNo=${cardNo}`,
     headers: {
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+        "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1"
     },
 };
 
 
-$httpClient.get(option, (error, response, data) => {
+$httpClient.get(option, (error, response, body) => {
     if (error || !response || !response.body) {
         $notification.post("wifi", "请求失败", error || "无响应数据");
         return $done();
     }
     
-    let body;
+        if (!body) {
+        $notification.post("wifi", "请求失败", "响应体为空");
+        return $done();
+    }
+    
     try {
-        body = JSON.parse(response.body);
+        body = typeof body === 'string' ? JSON.parse(body) : body;
     } catch (e) {
         $notification.post("wifi", "数据解析失败", e.message);
         return $done();
@@ -54,7 +59,7 @@ $httpClient.get(option, (error, response, data) => {
     }
 
     $done();
-}, error => {
-    console.log(error);
-    $done();
-})
+    } catch (e) {
+        $notification.post("wifi", "数据解析失败", e.message);
+        return $done();
+    }
