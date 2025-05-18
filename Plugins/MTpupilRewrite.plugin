@@ -15,8 +15,44 @@
 ^https?:\/\/api\.baidudce\.com\/.rest\/.com\/rest\/2\.0\/solution\/vi\/img_censor\/v2\/user_defined reject
 ^https?:\/\/app\.10099\.com\.cn\/contact-web\/api\/version\/getFlashScreenPage reject
 ^https?:\/\/ai-cn-gateway\.unidreamapp\.com\/api\/aigc\/und-compliance\/censor_conf\/v2 reject
+
+# 小众app聚合广告
+# pglstatp-toutiao.com, adukwai.com, pglstatp-toutiao.com, kuaishou.cn, ugdtimg.com
+^https?:\/\/.*\.pglstatp-toutiao\.com\/web\.business\.image reject
+^https?:\/\/.*\.adukwai\.com\/udata\/pkg reject
+^https?:\/\/.*\.pglstatp-toutiao\.com\/ reject
+^https?:\/\/open\.e\.kuaishou\.cn\/rest\/e\/v3\/open\/univ reject
+^https?:\/\/pgdt\.ugdtimg\.com reject
+
+# bilibili去广告
+# app.bilibili.com, app.biliapi.net
+# 去首页推荐广告
+^https?:\/\/app\.bili(bili|api)\.(com|net)\/x\/v2\/feed\/index response-body-json-jq '(.data.items |= map(select(.card_goto != "ad_web_s")))'
+# 去开屏广告
+^https:\/\/app\.bilibili\.com\/x\/v2\/splash\/(brand\/list|event\/list2|list|show)\? reject
+
+
+#! nga社区开屏广告
+#! *.pglstatp-toutiao.com, gdfp.gifshow.com
+^https?:\/\/.*\.pglstatp-toutiao\.com\/ad\.union\.api.* reject
+^https?:\/\/.*\.gifshow\.com.* reject
+
+#! 腾讯系常见广告（泛用但不精准，大多时候不一定能去掉广告）
+#! *.gdt.qq.com, *.gtimg.cn, *.gdtimg.com
+^https?://((?!adsmind\.gdtimg\.com)(.*\.)?(gdt\.qq\.com|gdtimg\.com|gtimg\.cn))/ reject
+
+#! 微信公众号文中及底部广告（完美去除）
+#! *.weixin.qq.com
+^https?:\/\/mp\.weixin\.qq\.com\/mp\/getappmsga.* reject
+
+#! 部分微信小程序开屏广告以及订阅号流中广告，不完美去除，小程序可能会加载本地图片，建议清一下微信缓存，订阅号流广告仅屏蔽图片，无法去除整个view
+#! wxs.qq.com
+^https?:\/\/.*\.wxs\.qq\.com.* reject
+
+
 [host]
 
 [script]
 
 [mitm]
+hostname = app.bilibili.com, app.biliapi.net, api.baidudce.com, app.10099.com.cn, ai-cn-gateway.unidreamapp.com, *.pglstatp-toutiao.com, *.adukwai.com, open.e.kuaishou.cn, pgdt.ugdtimg.com, *.gifshow.com, *.gdt.qq.com, *.gtimg.cn, *.gdtimg.com, mp.weixin.qq.com, *.wxs.qq.com
