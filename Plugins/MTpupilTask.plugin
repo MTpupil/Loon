@@ -1,0 +1,22 @@
+#!name= 木瞳自用任务
+#!desc= 定时任务就放这里啦
+#!author= 木瞳
+#!homepage= https://github.com/MTpupil
+#!icon= https://s1.ax1x.com/2022/11/23/z8LIPO.jpg
+#!tag = 木瞳
+
+[Argument]
+
+[General]
+
+[rule]
+
+[rewrite]
+^https?:\/\/api\.baidudce\.com\/.rest\/.com\/rest\/2\.0\/solution\/vi\/img_censor\/v2\/user_defined reject
+^https?:\/\/app\.10099\.com\.cn\/contact-web\/api\/version\/getFlashScreenPage reject
+^https?:\/\/ai-cn-gateway\.unidreamapp\.com\/api\/aigc\/und-compliance\/censor_conf\/v2 reject
+[host]
+
+[script]
+
+[mitm]
