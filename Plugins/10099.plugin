@@ -4,8 +4,8 @@
 #!homepage= https://github.com/MTpupil
 #!icon= https://s1.ax1x.com/2022/11/23/z8LIPO.jpg
 #!tag = 木瞳
-#!input = Access
-#!input = data
+#!input = 10099_access
+#!input = 10099_data
 
 
 [Argument]
