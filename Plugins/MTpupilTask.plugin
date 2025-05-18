@@ -13,13 +13,13 @@
 #!input = 最小步数
 
 [Argument]
-wxstepUser = input,tag = 账号,desc = 请填写账号
-wxstepPwd = input,tag = 密码,desc = 请填写密码
+wxstepUser = input, "", tag = 账号,desc = 请填写账号
+wxstepPwd = input, "", tag = 密码,desc = 请填写密码
 wxstepNotice = switch, true, tag = 通知, desc = 关闭后不再通知程序运行结果
-wxstepRandom = switch, true, tag = 使用随机步数, desc= 开启后使用最大值和最小值之间的随机步数。
-wxstepnum = input,tag = 固定步数, desc = 固定步数，开启随机步数不用输入这个
-wxstepStepMax = input, tag = 步数最大值 , desc = 随机步数的上限，随机的数字不会超过这个数字 
-wxstepStepMin =input, tag = 步数最小值 , desc = 随机步数的下限，随机的数字不会小于这个数字 
+wxstepRandom = switch, true, tag = 使用随机步数, desc = 开启后使用最大值和最小值之间的随机步数。
+wxstepnum = input, "", tag = 固定步数, desc = 固定步数，开启随机步数不用输入这个
+wxstepStepMax = input, "", tag = 步数最大值 , desc = 随机步数的上限，随机的数字不会超过这个数字 
+wxstepStepMin = input, "", tag = 步数最小值 , desc = 随机步数的下限，随机的数字不会小于这个数字 
 [General]
 
 [rule]
