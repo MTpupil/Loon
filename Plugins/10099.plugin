@@ -1,0 +1,27 @@
+#!name= 广电流量通知
+#!desc= 广电流量通知
+#!author= 木瞳
+#!homepage= https://github.com/MTpupil
+#!icon= https://s1.ax1x.com/2022/11/23/z8LIPO.jpg
+#!tag = 木瞳
+
+
+[Argument]
+cron = input, "30 9 * * * ", tag = 脚本运行定时，不懂不要动
+Access = input, "", tag = Access, desc = 请填写Access
+data = input, "", tag = data, desc = 请填写data
+isMerge = switch, true, tag = 合并模式, desc = 
+isTimeEnable = switch, true, tag = 显示时间, desc = 
+isForecastEnable = switch, true, tag = 显示统计, desc = 
+
+[General]
+
+[rule]
+
+[rewrite]
+
+[host]
+
+[script]
+cron {cron} script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Task/10099.js, argument = [{Access},{data},{isMerge},{isTimeEnable},{isForecastEnable}]
+[mitm]
