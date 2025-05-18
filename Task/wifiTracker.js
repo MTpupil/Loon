@@ -7,7 +7,6 @@
 // @match        *://*/*
 // @grant        GM_xmlhttpRequest
 // ==/UserScript==
-
 const cardNo = "70032342060810";
 
 
@@ -20,46 +19,37 @@ let option = {
 };
 
 
-$httpClient.get(option, (error, response, body) => {
-    if (error || !response || !response.body) {
-        $notification.post("wifi", "请求失败", error || "无响应数据");
+$httpClient.get(option, (errormsg, response, data) => {
+    if (errormsg) {
+        $notification.post("WiFi检测", "请求失败", errormsg);
         return $done();
     }
-    
-        if (!body) {
-        $notification.post("wifi", "请求失败", "响应体为空");
-        return $done();
-    }
-    
-    try {
-        body = typeof body === 'string' ? JSON.parse(body) : body;
-    } catch (e) {
-        $notification.post("wifi", "数据解析失败", e.message);
-        return $done();
-    }
-    let msg = body.msg
-    if (msg.includes("OK")) {
-        let data = body.data;
-        let serveValidDate = new Date(data.serveValidDate);
-        let now = new Date();
-        let diffTime = Math.abs(serveValidDate - now);
-        let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-        let surplusFlow = parseFloat(data.surplusFlowText);
-        let deviceMonthFlow = parseFloat(data.deviceMonthFlow);
-        let flowPercentage = (surplusFlow / deviceMonthFlow) * 100;
 
-        if (data.deviceState === '在线') {
-            if (diffDays > -2 && (diffDays <= 3 || flowPercentage < 10)) {
-                let message = `到期时间剩余 ${diffDays} 天，剩余流量百分比为 ${flowPercentage.toFixed(2)}%`;
-                $notification.post("wifi", "到期或流量不足提醒", message);
+    try {
+        const body = typeof data === 'string' ? JSON.parse(data) : data;
+        const msg = body.msg;
+        if (msg.includes("OK")) {
+            const responseData = body.data;
+            let serveValidDate = new Date(responseData.serveValidDate);
+            let now = new Date();
+            let diffTime = Math.abs(serveValidDate - now);
+            let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            let surplusFlow = parseFloat(responseData.surplusFlowText);
+            let deviceMonthFlow = parseFloat(responseData.deviceMonthFlow);
+            let flowPercentage = (surplusFlow / deviceMonthFlow) * 100;
+
+            if (responseData.deviceState === '在线') {
+                if (diffDays > -2 && (diffDays <= 3 || flowPercentage < 10)) {
+                    let message = `到期时间剩余 ${diffDays} 天，剩余流量百分比为 ${flowPercentage.toFixed(2)}%`;
+                    $notification.post("WiFi检测", "到期或流量不足提醒", message);
+                }
             }
+        } else {
+            $notification.post("WiFi检测", "数据获取失败", msg);
         }
-    } else {
-        $notification.post("wifi", "数据获取失败", msg);
+    } catch (e) {
+        $notification.post("WiFi检测", "数据处理错误", e.message);
     }
 
     $done();
-    } catch (e) {
-        $notification.post("wifi", "数据解析失败", e.message);
-        return $done();
-    }
+});
