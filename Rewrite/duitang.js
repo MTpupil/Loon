@@ -4,8 +4,6 @@
  * 公众号：木瞳科技Pro
  * [MITM]
  * hostname = *.duitang.com
- * [rewrite_local]
- * ^https?:\/\/(www|(nz-)?api)\.duitang\.com\/(napi\/people|account)\/me\/ url script-response-body https://raw.githubusercontent.com/MTpupil/qxmine/master/rewrite/js/duitang.js
  */
 
 const SCRIPT_NAME = '堆糖';

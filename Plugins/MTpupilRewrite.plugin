@@ -40,5 +40,9 @@ http-response ^https?:\/\/www\.voicepackage\.xyz\/app\/(main\/account\/index|use
 #! raw.githubusercontent.com
 http-request ^https?:\/\/raw\.githubusercontent\.com.+ script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Rewrite/disableGithubCache.js, requires-body=true, tag = 禁用GitHub资源缓存
 
+#! 好好养宠物
+#! chong.beijingmorning.cn
+http-response ^https?:\/\/chong\.beijingmorning\.cn\/user\/userinfo script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Rewrite/hhycy.js, requires-body=true, tag = 好好养宠物解锁
+
 [mitm]
-hostname = ap*.intsig.net, *.duitang.com, *.yunshangxiezuo.com, notability.com, hk4e - api.mihoyo.com, w.5hzs.com, www.voicepackage.xyz, raw.githubusercontent.com
+hostname = ap*.intsig.net, *.duitang.com, *.yunshangxiezuo.com, notability.com, hk4e - api.mihoyo.com, w.5hzs.com, www.voicepackage.xyz, raw.githubusercontent.com, chong.beijingmorning.cn
