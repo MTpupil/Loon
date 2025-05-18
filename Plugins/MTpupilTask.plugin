@@ -24,5 +24,5 @@ wxstepStepMin = input, "", tag = 随机步数最小值 , desc = 随机步数的�
 [host]
 
 [script]
-cron { cron } script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Task/wxstep.js, argument = [{wxstepUser},{wxstepPwd},{wxstepNotice},{wxstepRandom},{wxstepStepMax},{wxstepStepMin},{wxstepnum}]
+cron {cron} script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Task/wxstep.js, argument = [{wxstepUser},{wxstepPwd},{wxstepNotice},{wxstepRandom},{wxstepStepMax},{wxstepStepMin},{wxstepnum}]
 [mitm]
