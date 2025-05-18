@@ -2,8 +2,12 @@
  * 广电流量每日通知
  *
  */
-const access = $argument.Access;
-const updata = $argument.data;
+const access = $persistentStore.read("10099_access");
+const updata = $persistentStore.read("10099_data");
+if (!access || !updata) {
+    $notification.post("参数错误", "", "请先设置access和data参数");
+    $done();
+}
 const isMerge = $argument.isMerge; // 是否合并
 const isTimeEnabled = $argument.isTimeEnable; // 是否显示时间
 const isForecastEnabled = $argument.isForecastEnable; // 是否开启预计功能
