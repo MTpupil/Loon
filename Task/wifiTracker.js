@@ -20,7 +20,18 @@ let option = {
 
 
 $httpClient.get(option, (error, response, data) => {
-    let body = JSON.parse(response.body);
+    if (error || !response || !response.body) {
+        $notification.post("wifi", "请求失败", error || "无响应数据");
+        return $done();
+    }
+    
+    let body;
+    try {
+        body = JSON.parse(response.body);
+    } catch (e) {
+        $notification.post("wifi", "数据解析失败", e.message);
+        return $done();
+    }
     let msg = body.msg
     if (msg.includes("OK")) {
         let data = body.data;
