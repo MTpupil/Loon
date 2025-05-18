@@ -2,7 +2,7 @@
  * 微信运动步数
  * author：木瞳
  * 
- * 使用此脚本必须在boxjs中填入账号密码及要刷的步数
+ * 
  */
 let notice = $persistentStore.read("mtpupil_wxstep_notice");
 let user = $persistentStore.read("mtpupil_wxstep_user");
