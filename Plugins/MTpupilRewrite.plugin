@@ -10,7 +10,12 @@
 [General]
 
 [rule]
-https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Rule/majsoul.list, 雀魂
+#! 雀魂
+DOMAIN-KEYWORD, majsoul, 雀魂
+DOMAIN-KEYWORD, maj-soul, 雀魂
+DOMAIN-KEYWORD, mahjongsou, 雀魂
+DOMAIN-KEYWORD, catmjstudio, 雀魂
+
 
 [rewrite]
 
