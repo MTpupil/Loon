@@ -56,7 +56,7 @@ $httpClient.post(myRequest, (error, response, data) => {
         return $done();
     }
 
-    $.log("查询成功");
+    console.log("查询成功");
     const used = result.data.intfResultBean.userExtResList.length > 0 ? result.data.intfResultBean.userExtResList[0].addupTotalValue / gb : 0;
     const resList = result.data.intfResultBean.userResList;
     const nameMap = {}; // 用于存放合并结果
