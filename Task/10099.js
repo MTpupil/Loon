@@ -4,9 +4,9 @@
  */
 const access = $argument.Access;
 const updata = $argument.data;
-const isMerge = $argument.isMerge === "true"; // 是否合并
-const isTimeEnabled = $argument.isTimeEnable === "true"; // 是否显示时间
-const isForecastEnabled = $argument.isForecastEnable === "true"; // 是否开启预计功能
+const isMerge = $argument.isMerg; // 是否合并
+const isTimeEnabled = $argument.isTimeEnable; // 是否显示时间
+const isForecastEnabled = $argument.isForecastEnable; // 是否开启预计功能
 
 let gb = 1024 * 1024;
 let time = getFormattedDate();
