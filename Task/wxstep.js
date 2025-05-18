@@ -4,11 +4,12 @@
  * 
  * 
  */
-let notice = $persistentStore.read("mtpupil_wxstep_notice");
-let user = $persistentStore.read("mtpupil_wxstep_user");
-let pwd = $persistentStore.read("mtpupil_wxstep_pwd");
-let step = $persistentStore.read("mtpupil_wxstep_step");
-step = formatStep(step);
+let notice = $persistentStore.read("wxstepNotice");
+let user = $persistentStore.read("wxstepUser");
+let pwd = $persistentStore.read("wxstepPwd");
+let stepMax = $persistentStore.read("wxstepStepMax");
+let stepMin = $persistentStore.read("wxstepStepMin");
+
 
 let option = {
     url: "https://api.leafone.cn/api/misport",
