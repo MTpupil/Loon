@@ -9,7 +9,7 @@
 
 
 [Argument]
-enable = switch, tag = 脚本开关
+enable = switch, true, tag = 脚本开关
 cron = input, "30 9 * * * ", tag = 脚本运行定时，不懂不要动
 Access = input, "", tag = Access, desc = 请填写Access
 data = input, "", tag = data, desc = 请填写data

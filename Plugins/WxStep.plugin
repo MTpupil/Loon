@@ -7,7 +7,7 @@
 
 
 [Argument]
-enable = switch, tsg = 脚本开关
+enable = switch, true, tsg = 脚本开关
 cron = input, "0 8 * * * ", tag = 脚本运行定时，不懂不要动
 wxstepUser = input, "", tag = 账号,desc = 请填写账号
 wxstepPwd = input, "", tag = 密码,desc = 请填写密码
