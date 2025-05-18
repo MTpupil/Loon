@@ -42,7 +42,7 @@ http-request ^https?:\/\/raw\.githubusercontent\.com.+ script-path=https://raw.g
 
 #! 好好养宠物
 #! chong.beijingmorning.cn
-http-response ^https?:\/\/chong\.beijingmorning\.cn\/user\/userinfo script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Rewrite/hhycy.js, requires-body=true, tag = 好好养宠物解锁
+http-response ^https?:\/\/chong\.beijingmorning\.cn\/user\/userinfo script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Rewrite/hhycw.js, requires-body=true, tag = 好好养宠物解锁
 
 [mitm]
 hostname = ap*.intsig.net, *.duitang.com, *.yunshangxiezuo.com, notability.com, hk4e - api.mihoyo.com, w.5hzs.com, www.voicepackage.xyz, raw.githubusercontent.com, chong.beijingmorning.cn
