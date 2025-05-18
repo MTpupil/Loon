@@ -1,15 +1,13 @@
 #!name= 木瞳自用重写
 #!desc= 自己用的重写就放在这里了
 #!author= 木瞳
-#!homepage= 木瞳[https://github.com/MTpupil]
+#!homepage= https://github.com/MTpupil
 #!icon= 
 #!tag = 木瞳
 
 [Argument]
 
-
 [General]
-
 
 [rule]
 
@@ -40,4 +38,4 @@ http-response ^https?:\/\/w\.5hzs\.com\/player\/index scrip-path=https://raw.git
 http-response ^https?:\/\/www\.voicepackage\.xyz\/app\/(main\/account\/index|user\/userProfile|main\/home) script-path=https://raw.githubusercontent.com/MTpupil/qxmine/master/rewrite/js/qianbianyuyin.js, requires-body=true, tag = 千变语音解锁
 
 [mitm]
-hostname = ap *.intsig.net, *.duitang.com, *.yunshangxiezuo.com, notability.com, hk4e - api.mihoyo.com, w.5hzs.com, www.voicepackage.xyz
+hostname = ap*.intsig.net, *.duitang.com, *.yunshangxiezuo.com, notability.com, hk4e - api.mihoyo.com, w.5hzs.com, www.voicepackage.xyz
