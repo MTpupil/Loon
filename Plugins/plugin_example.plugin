@@ -1,0 +1,43 @@
+#!name= 木瞳自用重写
+#!desc= 自己用的重写就放在这里了
+#!author= 木瞳
+#!homepage= 木瞳[https://github.com/MTpupil]
+#!icon= 
+#!tag = 木瞳
+
+[Argument]
+
+
+[General]
+
+
+[rule]
+
+[rewrite]
+
+[host]
+
+
+[script]
+#! 堆糖/奶油解锁vip
+#! *.duitang.com
+http-response ^https?:\/\/(www|(nz-)?api(-2)?)\.duitang\.com\/(napi\/people|account)\/me\/ script-path=https://raw.githubusercontent.com/MTpupil/qxmine/master/rewrite/js/duitang.js, requires-body=true, tag = 堆糖/奶油解锁vip
+
+#! 云上写作破解svip
+#! *.yunshangxiezuo.com
+http-response ^https?:\/\/www\.yunshangxiezuo\.com\/api\/getAuthenticate_2 script-path=https://raw.githubusercontent.com/MTpupil/qxmine/master/rewrite/js/ysxz.js, requires-body=true, tag = 云上写作破解svip
+
+#!notability解锁plus
+#!notability.com
+http-response ^https?:\/\/notability\.com\/(global|subscriptions) script-path=https://raw.githubusercontent.com/MTpupil/qxmine/master/rewrite/js/notability.js, requires-body=true, tag = notability解锁plus
+
+# ssme解锁会员
+# w.5hzs.com
+http-response ^https?:\/\/w\.5hzs\.com\/player\/index scrip-path=https://raw.githubusercontent.com/MTpupil/qxmine/master/rewrite/js/ssme.js, requires-body=true, tag = ssme解锁会员
+
+# 千变语音
+# www.voicepackage.xyz
+http-response ^https?:\/\/www\.voicepackage\.xyz\/app\/(main\/account\/index|user\/userProfile|main\/home) script-path=https://raw.githubusercontent.com/MTpupil/qxmine/master/rewrite/js/qianbianyuyin.js, requires-body=true, tag = 千变语音解锁
+
+[mitm]
+hostname = ap *.intsig.net, *.duitang.com, *.yunshangxiezuo.com, notability.com, hk4e - api.mihoyo.com, w.5hzs.com, www.voicepackage.xyz
