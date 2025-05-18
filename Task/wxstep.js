@@ -7,8 +7,32 @@
 let notice = $persistentStore.read("wxstepNotice");
 let user = $persistentStore.read("wxstepUser");
 let pwd = $persistentStore.read("wxstepPwd");
+let wxstepRandom = $persistentStore.read("wxstepRandom");
 let stepMax = $persistentStore.read("wxstepStepMax");
 let stepMin = $persistentStore.read("wxstepStepMin");
+let wxstep = $persistentStore.read("wxstepnum");
+
+// 参数校验
+if (isNaN(Number(stepMin)) || isNaN(Number(stepMax)) || isNaN(Number(wxstep))) {
+    $notification.post("木瞳提醒", "", "步数参数必须为数字");
+    $done();
+}
+if (Number(stepMin) < 0 || Number(stepMax) < 0 || Number(wxstep) < 0) {
+    $notification.post("木瞳提醒", "", "步数不能为负数");
+    $done();
+}
+if (Number(stepMax) <= Number(stepMin)) {
+    $notification.post("木瞳提醒", "", "最大步数必须大于最小步数");
+    $done();
+}
+if (Number(stepMax) > 98800 || Number(stepMin) > 98800 || Number(wxstep) > 98800) {
+    $notification.post("木瞳提醒", "", "步数不能超过98800");
+    $done();
+}
+
+let step = wxstepRandom === "true" ? 
+    Math.floor(Math.random() * (Number(stepMax) - Number(stepMin) + 1) + Number(stepMin)) : 
+    wxstep;
 
 
 let option = {
@@ -17,13 +41,14 @@ let option = {
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
     },
     body: `user=${user}&password=${pwd}&step=${step}`,
+    timeout: 5000,
 };
 
 //开始刷步
 $httpClient.post(option, (error, response, data) => {
     if (error) {
         console.log(error);
-        $notification.post("通知", "接口目前失效中", "有空修复");
+        $notification.post("通知", "接口目前失效中", "随缘修复");
         $done();
         return;
     }
@@ -39,29 +64,3 @@ $httpClient.post(option, (error, response, data) => {
     
     $done();
 });
-
-//步数信息处理，用于判断数据合法以及随机数生成
-function formatStep(step) {
-    let pattern = /^[\d@]+$/;
-    if (!pattern.test(step)) {
-        $notification.post("❌错误", "步数格式有误，程序已退出", "");
-        $done();
-    }
-    
-    if (step.includes("@")) {
-        let steps = step.split("@");
-        if (Number(steps[0]) < Number(steps[1]) && Number(steps[1]) <= 98800) {
-            return Math.floor(Math.random() * (Number(steps[1]) - Number(steps[0]) + 1) + Number(steps[0]));
-        } else {
-            $notification.post("❌错误", "步数格式有误，程序已退出", "");
-            $done();
-        }
-    } else {
-        if (Number(step) <= 98800) {
-            return step;
-        } else {
-            $notification.post("❌错误", "步数格式有误，程序已退出", "");
-            $done();
-        }
-    }
-}
