@@ -1,5 +1,5 @@
-#!name= 木瞳自用重写
-#!desc= 自己用的重写就放在这里了
+#!name= 木瞳自用合集
+#!desc= 全体配置，包含几乎所有自用内容
 #!author= 木瞳
 #!homepage= https://github.com/MTpupil
 #!icon= https://s1.ax1x.com/2022/11/23/z8LIPO.jpg
@@ -10,11 +10,11 @@
 [General]
 
 [rule]
+https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Rule/majsoul.list, 雀魂
 
 [rewrite]
 
 [host]
-
 
 [script]
 #! 堆糖/奶油解锁vip
