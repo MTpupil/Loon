@@ -13,6 +13,10 @@ let stepMin = $persistentStore.read("wxstepStepMin");
 let wxstep = $persistentStore.read("wxstepnum");
 
 // 参数校验
+if (!user || !pwd) {
+    $notification.post("木瞳提醒", "", "账号密码不能为空");
+    $done();
+}
 if (isNaN(Number(stepMin)) || isNaN(Number(stepMax)) || isNaN(Number(wxstep))) {
     $notification.post("木瞳提醒", "", "步数参数必须为数字");
     $done();
@@ -57,7 +61,9 @@ $httpClient.post(option, (error, response, data) => {
     let msg = body.msg;
     
     if (msg.includes("成功")) {
-        $notification.post("刷步成功", `本次步数: ${step}`, "木瞳科技Pro感谢您的使用");
+        if (notice === "true") {
+            $notification.post("刷步成功", `本次步数: ${step}`, "木瞳科技Pro感谢您的使用");
+        }
     } else {
         $notification.post("刷步失败", `错误信息: ${msg}`, "木瞳科技Pro提醒您检查信息填写是否正确");
     }
