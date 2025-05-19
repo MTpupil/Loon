@@ -8,9 +8,37 @@ if (!access || !updata) {
     $notification.post("参数错误", "", "请先设置access和data参数");
     $done();
 }
-const isMerge = $argument.isMerge; // 是否合并
-const isTimeEnabled = $argument.isTimeEnable; // 是否显示时间
-const isForecastEnabled = $argument.isForecastEnable; // 是否显示预计
+function parseArguments(arg) {
+    // 如果arg是对象，直接返回
+    if (typeof arg === 'object') {
+        return {
+            isMerge: arg.isMerge === true || arg.isMerge === 'true',
+            isTimeEnable: arg.isTimeEnable === true || arg.isTimeEnable === 'true',
+            isForecastEnable: arg.isForecastEnable === true || arg.isForecastEnable === 'true'
+        };
+    }
+    
+    // 如果arg是字符串，解析参数
+    const params = {};
+    if (typeof arg === 'string') {
+        arg.split('&').forEach(item => {
+            const [key, value] = item.split('=');
+            params[key] = value === 'true';
+        });
+    }
+    
+    return {
+        isMerge: params.isMerge || false,
+        isTimeEnable: params.isTimeEnable || false,
+        isForecastEnable: params.isForecastEnable || false
+    };
+}
+
+// 解析参数
+const args = parseArguments($argument);
+const isMerge = args.isMerge;
+const isTimeEnabled = args.isTimeEnable;
+const isForecastEnabled = args.isForecastEnable;
 
 let gb = 1024 * 1024;
 let time = getFormattedDate();
