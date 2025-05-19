@@ -1,5 +1,5 @@
 #!name= 广电流量通知
-#!desc= 广电流量通知
+#!desc= 可每日推送广电流量使用详情，脚本定时设置，想改的去了解cron表达式，Access和data需要自己抓包，懒得写教程了。这两个参数是持久化的，控制通知格式输出的开关是普通参数。
 #!author= 木瞳
 #!homepage= https://github.com/MTpupil
 #!icon= https://s1.ax1x.com/2022/11/23/z8LIPO.jpg
