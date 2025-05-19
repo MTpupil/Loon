@@ -8,9 +8,9 @@ if (!access || !updata) {
     $notification.post("参数错误", "", "请先设置access和data参数");
     $done();
 }
-const isMerge = $argument.isMerge; // 是否合并
-const isTimeEnabled = $argument.isTimeEnable; // 是否显示时间
-const isForecastEnabled = $argument.isForecastEnable; // 是否开启预计功能
+const isMerge = $argument.isMerge === 'true'; // 是否合并
+const isTimeEnabled = $argument.isTimeEnable === 'true'; // 是否显示时间
+const isForecastEnabled = $argument.isForecastEnable === 'true'; // 是否显示预计
 
 let gb = 1024 * 1024;
 let time = getFormattedDate();
