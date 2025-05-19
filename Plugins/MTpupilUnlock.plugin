@@ -45,4 +45,4 @@ http-response ^https?:\/\/www\.voicepackage\.xyz\/app\/(main\/account\/index|use
 http-response ^https?:\/\/chong\.beijingmorning\.cn\/user\/userinfo script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Rewrite/hhycw.js, requires-body=true, tag = 好好养宠物解锁
 
 [mitm]
-hostname = ap*.intsig.net, *.duitang.com, *.yunshangxiezuo.com, notability.com, hk4e - api.mihoyo.com, w.5hzs.com, www.voicepackage.xyz, raw.githubusercontent.com, chong.beijingmorning.cn
+hostname = ap*.intsig.net, *.duitang.com, *.yunshangxiezuo.com, notability.com, w.5hzs.com, www.voicepackage.xyz, raw.githubusercontent.com, chong.beijingmorning.cn
