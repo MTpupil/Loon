@@ -1,169 +1,182 @@
 /**
  * 广电流量每日通知
- *
+ * 作者：木瞳
  */
-const access = $persistentStore.read("10099_access");
-const updata = $persistentStore.read("10099_data");
-if (!access || !updata) {
+
+const GB = 1024 * 1024;
+const ACCESS = $persistentStore.read("10099_access");
+const UPDATA = $persistentStore.read("10099_data");
+
+// 提前验证必要参数
+if (!ACCESS || !UPDATA) {
     $notification.post("参数错误", "", "请先设置access和data参数");
     $done();
 }
-function parseArguments(arg) {
-    // 如果arg是对象，直接返回
-    if (typeof arg === 'object') {
-        return {
-            isMerge: arg.isMerge === true || arg.isMerge === 'true',
-            isTimeEnable: arg.isTimeEnable === true || arg.isTimeEnable === 'true',
-            isForecastEnable: arg.isForecastEnable === true || arg.isForecastEnable === 'true'
-        };
-    }
+
+// 解析参数
+const parseArguments = arg => {
+    const defaultArgs = {
+        isMerge: false,
+        isTimeEnable: false,
+        isForecastEnable: false
+    };
+
+    if (!arg) return defaultArgs;
     
-    // 如果arg是字符串，解析参数
-    const params = {};
-    if (typeof arg === 'string') {
-        arg.split('&').forEach(item => {
-            const [key, value] = item.split('=');
-            params[key] = value === 'true';
-        });
+    if (typeof arg === 'object') {
+        return Object.fromEntries(
+            Object.entries(defaultArgs)
+                .map(([key, _]) => [key, arg[key] === true || arg[key] === 'true'])
+        );
     }
     
     return {
-        isMerge: params.isMerge || false,
-        isTimeEnable: params.isTimeEnable || false,
-        isForecastEnable: params.isForecastEnable || false
+        ...defaultArgs,
+        ...Object.fromEntries(
+            arg.split('&')
+                .map(item => item.split('='))
+                .map(([key, value]) => [key, value === 'true'])
+        )
     };
-}
+};
 
-// 解析参数
-const args = parseArguments($argument);
-const isMerge = args.isMerge;
-const isTimeEnabled = args.isTimeEnable;
-const isForecastEnabled = args.isForecastEnable;
+const { isMerge, isTimeEnable, isForecastEnable } = parseArguments($argument);
 
-let gb = 1024 * 1024;
-let time = getFormattedDate();
+// 工具函数
+const formatNumber = num => Number(num.toFixed(2));
+const getFormattedDate = () => {
+    const date = new Date();
+    const pad = num => String(num).padStart(2, '0');
+    
+    return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+};
 
-function formatNumber(num) {
-    return Number(num.toFixed(2));
-}
+// 格式化详情
+const formatDetail = (name, balance, highFee) => {
+    const getPercentEmoji = () => {
+        if (balance === highFee) return " 💯";
+        if (balance === 0) return " ⛔";
+        return ` (${formatNumber((balance / highFee) * 100)}%) 🟢`;
+    };
+    
+    return `${name}: ${formatNumber(balance / GB)} / ${formatNumber(highFee / GB)} GB${getPercentEmoji()}`;
+};
 
-function formatDetail(name, balance, highFee) {
-    const percent = balance === highFee ? " 💯" : balance === 0 ? " ⛔" : ` (${formatNumber((balance / highFee) * 100)}%) 🟢`;
-    return `${name}: ${formatNumber(balance / gb)} / ${formatNumber(highFee / gb)} GB ${percent}`;
-}
-
-function calculateForecast(used, total) {
-    const currentDate = new Date();
-    const currentDay = currentDate.getDate();
-    const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+// 计算预测
+const calculateForecast = (used, total) => {
+    const date = new Date();
+    const currentDay = date.getDate();
+    const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
     const remainingDays = daysInMonth - currentDay;
 
-    const avgDailyUsage = formatNumber(used / currentDay);
-    const avgDailyUsagePercent = formatNumber((used / total) * (1 / currentDay) * 100);
+    const calculate = (value, days) => 
+        days > 0 ? formatNumber(value / days) : 0;
+    
+    const calculatePercent = (value, days) => 
+        days > 0 ? formatNumber((value / total) * (1 / days) * 100) : 0;
 
-    const avgDailyRemaining = remainingDays > 0 ? formatNumber((total - used) / remainingDays) : 0;
-    const avgDailyRemainingPercent = remainingDays > 0 ? formatNumber(((total - used) / total) * (1 / remainingDays) * 100) : 0;
+    const avgDaily = calculate(used, currentDay);
+    const avgDailyPercent = calculatePercent(used, currentDay);
+    const avgRemaining = calculate(total - used, remainingDays);
+    const avgRemainingPercent = calculatePercent(total - used, remainingDays);
 
-    return `每日平均已用：${avgDailyUsage} GB（${avgDailyUsagePercent}%）\n每日平均剩余：${avgDailyRemaining} GB（${avgDailyRemainingPercent}%）`;
-}
-
-const url = "https://app.10099.com.cn/contact-web/api/busi/qryUserRes";
-const headers = {
-    "Access": access,
-    "Content-Type": "application/json",
-    "Accept-Language": "zh-CN,zh-Hans;q=0.9"
+    return `每日平均已用：${avgDaily} GB（${avgDailyPercent}%）\n每日平均剩余：${avgRemaining} GB（${avgRemainingPercent}%）`;
 };
-const data = { "data": updata };
 
-const myRequest = { url, method: "POST", headers, body: JSON.stringify(data) };
+// 获取使用进度图标
+const getUsageIcon = pct => {
+    const decimal = pct % 10;
+    const fullMoons = "🌕".repeat(9 - Math.floor(pct / 10));
+    const emptyMoons = "🌑".repeat(Math.floor(pct / 10));
+    const phaseMap = [
+        [8.75, "🌑"],
+        [6.25, "🌘"],
+        [3.75, "🌗"],
+        [1.25, "🌖"],
+        [0, "🌕"]
+    ];
+    
+    const currentPhase = phaseMap.find(([threshold]) => decimal >= threshold)[1];
+    return fullMoons + currentPhase + emptyMoons;
+};
 
-$httpClient.post(myRequest, (error, response, data) => {
-    if (error) {
-        $notification.post("查询失败", "", "请求异常");
-        return $done();
-    }
+// API请求配置
+const request = {
+    url: "https://app.10099.com.cn/contact-web/api/busi/qryUserRes",
+    method: "POST",
+    headers: {
+        "Access": ACCESS,
+        "Content-Type": "application/json",
+        "Accept-Language": "zh-CN,zh-Hans;q=0.9"
+    },
+    body: JSON.stringify({ data: UPDATA })
+};
+
+// 处理数据
+const processData = data => {
     const result = JSON.parse(data);
     if (result.message !== "操作成功") {
-        $notification.post("查询失败", "", result.message);
-        return $done();
+        throw new Error(result.message);
     }
 
-    console.log("查询成功");
-    const used = result.data.intfResultBean.userExtResList.length > 0 ? result.data.intfResultBean.userExtResList[0].addupTotalValue / gb : 0;
-    const resList = result.data.intfResultBean.userResList;
-    const nameMap = {}; // 用于存放合并结果
-    let details = [];
-    let total = 0;
+    const { intfResultBean: { userExtResList, userResList } } = result.data;
+    const used = (userExtResList[0]?.addupTotalValue ?? 0) / GB;
+    
+    const processItem = item => ({
+        name: item.itemName.replace(/.*【(.*?)】.*/, '$1').replace(/上月|流量/g, ""),
+        balance: parseFloat(item.balance),
+        highFee: parseFloat(item.highFee)
+    });
 
-    if (isMerge) {
-        // 合并相同 name 的数据
-        resList.forEach(item => {
-            let name = item.itemName.replace(/.*【(.*?)】.*/, '$1').replace(/上月/g, "").replace(/流量/g, "");
-            const highFee = parseFloat(item.highFee);
-            const balance = parseFloat(item.balance);
-
-            if (!nameMap[name]) {
-                nameMap[name] = { balance: 0, highFee: 0 };
-            }
-            nameMap[name].balance += balance;
-            nameMap[name].highFee += highFee;
-        });
-
-        for (const name in nameMap) {
-            const { balance, highFee } = nameMap[name];
-            total += highFee;
-            details.push(formatDetail(name, balance, highFee));
+    // 处理资源列表
+    const processResList = () => {
+        if (!isMerge) {
+            return userResList.map(processItem);
         }
-    } else {
-        // 不合并，直接逐条处理
-        resList.forEach(item => {
-            let name = item.itemName.replace(/.*【(.*?)】.*/, '$1').replace(/上月/g, "").replace(/流量/g, "");
-            const highFee = parseFloat(item.highFee);
-            const balance = parseFloat(item.balance);
 
-            total += highFee;
-            details.push(formatDetail(name, balance, highFee));
-        });
-    }
+        const merged = userResList.reduce((acc, item) => {
+            const { name, balance, highFee } = processItem(item);
+            if (!acc[name]) {
+                acc[name] = { balance: 0, highFee: 0 };
+            }
+            acc[name].balance += balance;
+            acc[name].highFee += highFee;
+            return acc;
+        }, {});
 
-    total = total / gb;
+        return Object.entries(merged).map(([name, values]) => ({
+            name,
+            ...values
+        }));
+    };
+
+    const items = processResList();
+    const total = items.reduce((sum, { highFee }) => sum + highFee, 0) / GB;
     const pct = (used / total) * 100;
-    const detailsString = details.join("\n");
+    
+    return { used, total, pct, items };
+};
 
-    // 可视化进度条
-    let usagePic = "";
-    const xiaoshu = pct % 10;
-
-    usagePic += "🌕".repeat(9 - Math.floor(pct / 10));
-    usagePic += xiaoshu >= 8.75 ? "🌑" : xiaoshu >= 6.25 ? "🌘" : xiaoshu >= 3.75 ? "🌗" : xiaoshu >= 1.25 ? "🌖" : "🌕";
-    usagePic += "🌑".repeat(Math.floor(pct / 10));
-
-    // 显示已用、剩余、预计详情
-    const forecastString = isForecastEnabled ? "\n\n" + calculateForecast(used, total) : "";
-    const title = isTimeEnabled ? `流量通知 🕐${time}` : "流量通知";
-
-    $notification.post(
-        title,
-        "已使用：" + formatNumber(used) + " GB（" + formatNumber(pct) + "%）",
-        "总量：" + formatNumber(total) + " GB\n剩余：" + formatNumber(total - used) + " GB\n" + usagePic + " (" + formatNumber(100 - pct) + "%)" + "\n\n" + detailsString + forecastString
-    );
-
-    $done();
-}, reason => {
-    $notification.post("流量通知", "", "运行异常，请检查");
-    $done();
-});
-
-function getFormattedDate() {
-    const date = new Date();
-
-    // 获取年、月、日、小时和分钟
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // 月份从0开始
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-
-    // 拼接成需要的格式
-    return `${year}-${month}-${day} ${hours}:${minutes}`;
+// 发送请求
+$httpClient.post(request, (error, response, data) => {
+    try {
+        if (error) throw new Error("请求异常");
+        
+        const { used, total, pct, items } = processData(data);
+        const details = items.map(item => formatDetail(item.name, item.balance, item.highFee));
+        
+        const title = isTimeEnable ? `流量通知 🕐${getFormattedDate()}` : "流量通知";
+        const usageIcon = getUsageIcon(pct);
+        const forecastInfo = isForecastEnable ? "\n\n" + calculateForecast(used, total) : "";
+        
+        $notification.post(
+            title,
+            `已使用：${formatNumber(used)} GB（${formatNumber(pct)}%）`,
+            `总量：${formatNumber(total)} GB\n剩余：${formatNumber(total - used)} GB\n${usageIcon} (${formatNumber(100 - pct)}%)\n\n${details.join("\n")}${forecastInfo}`
+        );
+    } catch (err) {
+        $notification.post("流量通知", "", err.message || "运行异常，请检查");
+    } finally {
+        $done();
     }
+});
