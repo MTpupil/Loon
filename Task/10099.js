@@ -168,15 +168,27 @@ $httpClient.post(request, (error, response, data) => {
         const details = items.map(item => formatDetail(item.name, item.balance, item.highFee));
 
         const title = isTimeEnable ? `流量通知 🕐${getFormattedDate()}` : "流量通知";
-        // 判断是否显示进度条
         const usageIcon = isProgressBar ? getUsageIcon(pct) : "";
         const percentText = isProgressBar ? ` (${formatNumber(100 - pct)}%)` : "";
         const forecastInfo = isForecastEnable ? "\n\n" + calculateForecast(used, total) : "";
 
+        // 只在 isProgressBar 时拼接进度条行，否则没有
+        const progressBarLine = isProgressBar
+            ? `${usageIcon}${percentText}\n`
+            : "";
+
+        // 组装正文
+        const notificationBody =
+            `总量：${formatNumber(total)} GB\n` +
+            `剩余：${formatNumber(total - used)} GB\n` +
+            progressBarLine +
+            `${details.join("\n")}` +
+            forecastInfo;
+
         $notification.post(
             title,
             `已使用：${formatNumber(used)} GB（${formatNumber(pct)}%）`,
-            `总量：${formatNumber(total)} GB\n剩余：${formatNumber(total - used)} GB\n${usageIcon}${percentText}\n\n${details.join("\n")}${forecastInfo}`
+            notificationBody
         );
     } catch (err) {
         $notification.post("流量通知", "", err.message || "运行异常，请检查");
