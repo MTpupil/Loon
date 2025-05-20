@@ -20,6 +20,6 @@ isCallDuration = switch, true, tag = 预留开关暂无实际作用, desc =
 
 
 [script]
-cron {cron} script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Task/10099.js, argument = [{Access},{data},{isMerge},{isTimeEnable},{isForecastEnable}], enable = {enable}
+cron {cron} script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Task/10099.js, argument = [{Access},{data},{isMerge},{isTimeEnable},{isForecastEnable},{isProgressBar},{isPhoneBill},{isCallDuration}], enable = {enable}
 
 [mitm]
