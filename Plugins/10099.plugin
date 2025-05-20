@@ -11,20 +11,15 @@
 [Argument]
 enable = switch, true, tag = 脚本开关
 cron = input, "30 9 * * * ", tag = 脚本运行定时，不懂不要动
-Access = input, "", tag = Access, desc = 请填写Access
-data = input, "", tag = data, desc = 请填写data
-isMerge = switch, true, tag = 合并模式, desc = 
-isTimeEnable = switch, true, tag = 显示时间, desc = 
-isForecastEnable = switch, true, tag = 显示统计, desc = 
+isMerge = switch, true, tag = 合并模式, desc = 相同名称的流量包会合并，例如你有两个月包，分别是10g和5g，那么只会显示一个月包是15g。
+isTimeEnable = switch, true, tag = 显示时间, desc = 大标题里面显示脚本运行时间。如果只固定cron运行不用开。如果需要频繁手动运行建议打开，记录每次运行的精确时间
+isForecastEnable = switch, true, tag = 显示统计, desc = 可以显示本月过去每天平均已用流量和剩余每天预计可用流量。
+isProgressBar = switch, true, tag = 预留开关暂无实际作用, desc = 
+isPhoneBill = switch, true, tag = 预留开关暂无实际作用, desc = 
+isCallDuration = switch, true, tag = 预留开关暂无实际作用, desc = 
 
-[General]
-
-[rule]
-
-[rewrite]
-
-[host]
 
 [script]
 cron {cron} script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Task/10099.js, argument = [{Access},{data},{isMerge},{isTimeEnable},{isForecastEnable}], enable = {enable}
+
 [mitm]
