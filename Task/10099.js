@@ -165,7 +165,7 @@ $httpClient.post(request, (error, response, data) => {
         const { used, total, pct, items } = processData(data);
         const details = items.map(item => formatDetail(item.name, item.balance, item.highFee));
         
-        const title = isTimeEnable ? `流量通知 🕐${getFormattedDate()}` : "流量通知";
+        const title = isTimeEnable ? `广电流量 🕐${getFormattedDate()}` : "广电流量";
         const usageIcon = getUsageIcon(pct);
         const forecastInfo = isForecastEnable ? "\n\n" + calculateForecast(used, total) : "";
         
@@ -175,7 +175,7 @@ $httpClient.post(request, (error, response, data) => {
             `总量：${formatNumber(total)} GB\n剩余：${formatNumber(total - used)} GB\n${usageIcon} (${formatNumber(100 - pct)}%)\n\n${details.join("\n")}${forecastInfo}`
         );
     } catch (err) {
-        $notification.post("流量通知", "", err.message || "运行异常，请检查");
+        $notification.post("广电流量", "", err.message || "运行异常，请检查");
     } finally {
         $done();
     }
