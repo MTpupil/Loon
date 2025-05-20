@@ -19,7 +19,7 @@ const parseArguments = arg => {
         isMerge: false,
         isTimeEnable: false,
         isForecastEnable: false,
-        isProgressBar: true // 新增参数
+        isProgressBar: false // 新增参数
     };
 
     if (!arg) return defaultArgs;
@@ -169,6 +169,7 @@ $httpClient.post(request, (error, response, data) => {
 
         const title = isTimeEnable ? `流量通知 🕐${getFormattedDate()}` : "流量通知";
         const progressBarInfo = isProgressBar ? `\n${getUsageIcon(pct)} (${formatNumber(100 - pct)}%)` : "";
+        console.log(isProgressBar)
         const forecastInfo = isForecastEnable ? "\n\n" + calculateForecast(used, total) : "";
 
         $notification.post(
