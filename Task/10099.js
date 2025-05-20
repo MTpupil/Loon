@@ -18,18 +18,19 @@ const parseArguments = arg => {
     const defaultArgs = {
         isMerge: false,
         isTimeEnable: false,
-        isForecastEnable: false
+        isForecastEnable: false,
+        isProgressBar: true // 新增参数
     };
 
     if (!arg) return defaultArgs;
-    
+
     if (typeof arg === 'object') {
         return Object.fromEntries(
             Object.entries(defaultArgs)
                 .map(([key, _]) => [key, arg[key] === true || arg[key] === 'true'])
         );
     }
-    
+
     return {
         ...defaultArgs,
         ...Object.fromEntries(
@@ -40,14 +41,15 @@ const parseArguments = arg => {
     };
 };
 
-const { isMerge, isTimeEnable, isForecastEnable } = parseArguments($argument);
+// 这里加上 isProgressBar
+const { isMerge, isTimeEnable, isForecastEnable, isProgressBar } = parseArguments($argument);
 
 // 工具函数
 const formatNumber = num => Number(num.toFixed(2));
 const getFormattedDate = () => {
     const date = new Date();
     const pad = num => String(num).padStart(2, '0');
-    
+
     return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(date.getHours())}:${pad(date.getMinutes())}`;
 };
 
@@ -58,7 +60,7 @@ const formatDetail = (name, balance, highFee) => {
         if (balance === 0) return " ⛔";
         return ` (${formatNumber((balance / highFee) * 100)}%) 🟢`;
     };
-    
+
     return `${name}: ${formatNumber(balance / GB)} / ${formatNumber(highFee / GB)} GB${getPercentEmoji()}`;
 };
 
@@ -69,10 +71,10 @@ const calculateForecast = (used, total) => {
     const daysInMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
     const remainingDays = daysInMonth - currentDay;
 
-    const calculate = (value, days) => 
+    const calculate = (value, days) =>
         days > 0 ? formatNumber(value / days) : 0;
-    
-    const calculatePercent = (value, days) => 
+
+    const calculatePercent = (value, days) =>
         days > 0 ? formatNumber((value / total) * (1 / days) * 100) : 0;
 
     const avgDaily = calculate(used, currentDay);
@@ -95,7 +97,7 @@ const getUsageIcon = pct => {
         [1.25, "🌖"],
         [0, "🌕"]
     ];
-    
+
     const currentPhase = phaseMap.find(([threshold]) => decimal >= threshold)[1];
     return fullMoons + currentPhase + emptyMoons;
 };
@@ -121,7 +123,7 @@ const processData = data => {
 
     const { intfResultBean: { userExtResList, userResList } } = result.data;
     const used = (userExtResList[0]?.addupTotalValue ?? 0) / GB;
-    
+
     const processItem = item => ({
         name: item.itemName.replace(/.*【(.*?)】.*/, '$1').replace(/上月|流量/g, ""),
         balance: parseFloat(item.balance),
@@ -153,7 +155,7 @@ const processData = data => {
     const items = processResList();
     const total = items.reduce((sum, { highFee }) => sum + highFee, 0) / GB;
     const pct = (used / total) * 100;
-    
+
     return { used, total, pct, items };
 };
 
@@ -161,21 +163,23 @@ const processData = data => {
 $httpClient.post(request, (error, response, data) => {
     try {
         if (error) throw new Error("请求异常");
-        
+
         const { used, total, pct, items } = processData(data);
         const details = items.map(item => formatDetail(item.name, item.balance, item.highFee));
-        
-        const title = isTimeEnable ? `广电流量 🕐${getFormattedDate()}` : "广电流量";
-        const usageIcon = getUsageIcon(pct);
+
+        const title = isTimeEnable ? `流量通知 🕐${getFormattedDate()}` : "流量通知";
+        // 判断是否显示进度条
+        const usageIcon = isProgressBar ? getUsageIcon(pct) : "";
+        const percentText = isProgressBar ? ` (${formatNumber(100 - pct)}%)` : "";
         const forecastInfo = isForecastEnable ? "\n\n" + calculateForecast(used, total) : "";
-        
+
         $notification.post(
             title,
             `已使用：${formatNumber(used)} GB（${formatNumber(pct)}%）`,
-            `总量：${formatNumber(total)} GB\n剩余：${formatNumber(total - used)} GB\n${usageIcon} (${formatNumber(100 - pct)}%)\n\n${details.join("\n")}${forecastInfo}`
+            `总量：${formatNumber(total)} GB\n剩余：${formatNumber(total - used)} GB\n${usageIcon}${percentText}\n\n${details.join("\n")}${forecastInfo}`
         );
     } catch (err) {
-        $notification.post("广电流量", "", err.message || "运行异常，请检查");
+        $notification.post("流量通知", "", err.message || "运行异常，请检查");
     } finally {
         $done();
     }
