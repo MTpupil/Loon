@@ -1,5 +1,5 @@
 #!name= 广电流量通知
-#!desc= 可根据cron表达式自定义时间推送广电流量使用详情，仅在广电祥龙卡套餐测试，其他套餐不保证适配。Access和data需要自己抓包，以后有空了会写一个自动获取Access和data的脚本。不要问有没有移动/联通/电信，没有因为我自己用不到。
+#!desc= 可根据cron表达式自定义时间推送广电流量使用详情，仅在广电祥龙卡套餐测试，其他套餐不保证适配。Access和data需要自己抓包，以后有空了会写一个自动获取Access和data的脚本。不要问有没有移动/联通/电信，没有因为我用不到。
 #!author= 木瞳
 #!homepage= https://github.com/MTpupil
 #!icon= https://s1.ax1x.com/2022/11/23/z8LIPO.jpg
@@ -15,8 +15,6 @@ isMerge = switch, true, tag = 合并模式, desc = 相同名称的流量包会�
 isTimeEnable = switch, true, tag = 大标题显示时间, desc = 大标题里面显示脚本运行时间。如果只固定cron运行不用开。如果需要频繁手动运行建议打开，记录每次运行的精确时间
 isForecastEnable = switch, true, tag = 显示统计预测, desc = 可以显示本月过去每天平均已用流量和剩余每天预计可用流量。
 isProgressBar = switch, true, tag = 显示可视化进度, desc = 
-isPhoneBill = switch, true, tag = 显示话费（暂无）, desc = 
-isCallDuration = switch, true, tag = 显示通话时长（暂无）, desc = 
 
 
 [script]
