@@ -169,9 +169,6 @@ $httpClient.post(request, (error, response, data) => {
 
         const title = isTimeEnable ? `流量通知 🕐${getFormattedDate()}` : "流量通知";
         const progressBarInfo = isProgressBar ? `\n${getUsageIcon(pct)} (${formatNumber(100 - pct)}%)` : "";
-        console.log(isProgressBar)
-        console.log(isTimeEnable)
-        console.log(isForecastEnable)
         const forecastInfo = isForecastEnable ? "\n\n" + calculateForecast(used, total) : "";
 
         $notification.post(
