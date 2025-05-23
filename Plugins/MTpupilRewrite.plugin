@@ -12,6 +12,10 @@
 [rule]
 
 [rewrite]
+
+# 千鸟物联去广告
+DOMAIN-SUFFIX medproad.com reject
+
 ^https?:\/\/api\.baidudce\.com\/.rest\/.com\/rest\/2\.0\/solution\/vi\/img_censor\/v2\/user_defined reject
 ^https?:\/\/app\.10099\.com\.cn\/contact-web\/api\/version\/getFlashScreenPage reject
 ^https?:\/\/ai-cn-gateway\.unidreamapp\.com\/api\/aigc\/und-compliance\/censor_conf\/v2 reject
