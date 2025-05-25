@@ -12,7 +12,7 @@
 [rule]
 
 # 千鸟物联去广告
-DOMAIN-SUFFIX, medproad.com, reject
+DOMAIN-SUFFIX, medproad.com, REJECT
 
 [rewrite]
 
@@ -59,4 +59,4 @@ DOMAIN-SUFFIX, medproad.com, reject
 [script]
 
 [mitm]
-hostname = app.bilibili.com, app.biliapi.net, api.baidudce.com, app.10099.com.cn, ai-cn-gateway.unidreamapp.com, *.pglstatp-toutiao.com, *.adukwai.com, open.e.kuaishou.cn, pgdt.ugdtimg.com, *.gifshow.com, *.gdt.qq.com, *.gtimg.cn, *.gdtimg.com, mp.weixin.qq.com, *.wxs.qq.com, *.medproad.com
+hostname = app.bilibili.com, app.biliapi.net, api.baidudce.com, app.10099.com.cn, ai-cn-gateway.unidreamapp.com, *.pglstatp-toutiao.com, *.adukwai.com, open.e.kuaishou.cn, pgdt.ugdtimg.com, *.gifshow.com, *.gdt.qq.com, *.gtimg.cn, *.gdtimg.com, mp.weixin.qq.com, *.wxs.qq.com
