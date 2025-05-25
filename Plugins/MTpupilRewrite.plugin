@@ -12,7 +12,7 @@
 [rule]
 
 # 千鸟物联去广告
-DOMAIN-SUFFIX medproad.com reject
+DOMAIN-SUFFIX, medproad.com, reject
 
 [rewrite]
 
