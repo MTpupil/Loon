@@ -1,5 +1,5 @@
 #!name= 广电流量通知
-#!desc= 可根据cron表达式自定义时间推送广电流量使用详情，仅在广电祥龙卡套餐测试，其他套餐不保证适配。Access和data需要自己抓包，以后有空了会写一个自动获取Access和data的脚本。不要问有没有移动/联通/电信，没有因为我用不到。
+#!desc= 可根据cron表达式自定义时间推送广电流量使用详情，仅在广电祥龙卡套餐测试，其他套餐不保证适配。第一次使用或Access和data失效的时候，可以打开获取参数开关，并去中国广电app，查看流量详情，如果弹出通知获取成功，就可以关掉获取参数开关。不要问有没有移动/联通/电信，没有因为我用不到。
 #!author= 木瞳
 #!homepage= https://github.com/MTpupil
 #!icon= https://s1.ax1x.com/2022/11/23/z8LIPO.jpg
@@ -9,6 +9,7 @@
 
 
 [Argument]
+enableGet = switch, false, tag = 获取参数开关
 enable = switch, true, tag = 脚本开关
 cron = input, "30 9 * * * ", tag = 脚本运行定时，不懂不要动
 isMerge = switch, true, tag = 合并模式, desc = 相同名称的流量包会合并，例如你有两个月包，分别是10g和5g，那么只会显示一个月包是15g。
@@ -19,5 +20,11 @@ isProgressBar = switch, true, tag = 显示可视化进度, desc =
 
 [script]
 cron {cron} script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Task/10099.js, argument = [{Access},{data},{isMerge},{isTimeEnable},{isForecastEnable},{isProgressBar},{isPhoneBill},{isCallDuration}], enable = {enable}
+
+
+http-request ^https?:\/\/app\.10099\.com\.cn\/contact-web\/api\/busi\/qryUserRes script-path=https://raw.githubusercontent.com/MTpupil/Loon/main/Task/10099-get,tag = 获取access和data,requires-body = true,timeout = 10,binary-body-mode = false,enable={enableGet}
+
+
+
 
 [mitm]
