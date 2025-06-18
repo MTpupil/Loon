@@ -35,7 +35,7 @@ if (Number(stepMax) > 98800 || Number(stepMin) > 98800 || Number(wxstep) > 98800
     $done();
 }
 
-let step = wxstepRandom === "true" ? 
+let step = (String(wxstepRandom).toLowerCase() === "true") ? 
     Math.floor(Math.random() * (Number(stepMax) - Number(stepMin) + 1) + Number(stepMin)) : 
     wxstep;
 
