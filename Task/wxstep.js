@@ -46,7 +46,7 @@ let option = {
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
     },
     body: `username=${user}&password=${pwd}&step=${step}`,
-    timeout: 5000,
+    timeout: 500000,
 };
 
 //开始刷步
