@@ -67,7 +67,5 @@ $httpClient.post(option, (error, response, data) => {
     } else {
         $notification.post("刷步失败", `错误信息: ${msg}`, "木瞳科技Pro提醒您检查信息填写是否正确");
     }
-    console.log(data); // 打印接口返回内容
-console.log(body); // 打印解析后的 JSON 对象
     $done();
 });
