@@ -61,9 +61,8 @@ $httpClient.post(option, (error, response, data) => {
     let body = JSON.parse(data);
     let msg = body.msg;
     
-    if (msg.includes("成功")) {
-        if (notice === "true") {
-            $notification.post("刷步成功", `本次步数: ${step}`, "木瞳科技Pro感谢您的使用");
+    if (String(notice).toLowerCase() === "true") {
+    $notification.post("刷步成功", `本次步数: ${step}`, "木瞳科技Pro感谢您的使用");
         }
     } else {
         $notification.post("刷步失败", `错误信息: ${msg}`, "木瞳科技Pro提醒您检查信息填写是否正确");
