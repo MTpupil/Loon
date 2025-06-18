@@ -45,7 +45,7 @@ let option = {
     headers: {
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
     },
-    body: `user=${user}&password=${pwd}&step=${step}`,
+    body: `username=${user}&password=${pwd}&step=${step}`,
     timeout: 5000,
 };
 
