@@ -41,7 +41,7 @@ let step = wxstepRandom === "true" ?
 
 
 let option = {
-    url: "https://api.leafone.cn/api/misport",
+    url: "https://api.bugpk.com/api/yd",
     headers: {
         "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
     },
