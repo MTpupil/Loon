@@ -9,7 +9,7 @@
  */
 
 const SCRIPT_NAME = '咔皮记账';
-const vip = /^https?:\/\/api.heylumi.cn\/note\/note-api\/user\/account\/status/;
+const vip = /^https?:\/\/api.heylumi.cn\/note\/note-api\/user\/account\/status\??/;
 
 
 
