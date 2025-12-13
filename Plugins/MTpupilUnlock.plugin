@@ -16,6 +16,11 @@
 [host]
 
 [script]
+
+#! 咔皮记账解锁修改vip
+#! api.heylumi.cn
+http-response ^https?:\/\/api\.heylumi\.cn\/note\/note-api\/user\/account\/status\?? script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Rewrite/kapi.js, requires-body=true, tag = 咔皮记账解锁VIP
+
 #! 堆糖/奶油解锁vip
 #! *.duitang.com
 http-response ^https?:\/\/(www|(nz-)?api(-2)?)\.duitang\.com\/(napi\/people|account)\/me\/ script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Rewrite/duitang.js, requires-body=true, tag = 堆糖/奶油解锁vip
