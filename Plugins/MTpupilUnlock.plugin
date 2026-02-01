@@ -19,7 +19,7 @@
 
 #! 养基宝vip
 #! wx.yangjibao.com
-http-response ^https?:\/\/wx\.yangjibao\.com\/wxapi\/account script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Rewrite/yjb.js, requires-body=true, tag = 养基宝VIP
+http-response ^https?:\/\/(wx|app-api)\.yangjibao\.com(\/wxapi\/account|\/user\/v1\/account) script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Rewrite/yjb.js, requires-body=true, tag = 养基宝VIP
 
 #! 咔皮记账解锁修改vip
 #! api.heylumi.cn
@@ -54,4 +54,4 @@ http-response ^https?:\/\/www\.voicepackage\.xyz\/app\/(main\/account\/index|use
 http-response ^https?:\/\/chong\.beijingmorning\.cn\/user\/userinfo script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Rewrite/hhycw.js, requires-body=true, tag = 好好养宠物解锁
 
 [mitm]
-hostname = ap*.intsig.net, *.duitang.com, *.yunshangxiezuo.com, notability.com, w.5hzs.com, www.voicepackage.xyz, raw.githubusercontent.com, chong.beijingmorning.cn, api.heylumi.cn ,wx.yangjibao.com
+hostname = ap*.intsig.net, *.duitang.com, *.yunshangxiezuo.com, notability.com, w.5hzs.com, www.voicepackage.xyz, raw.githubusercontent.com, chong.beijingmorning.cn, api.heylumi.cn ,*.yangjibao.com
