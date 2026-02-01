@@ -6,7 +6,7 @@
  * 
  * 
  */
-const url = /^https?:\/\/wx\.yangjibao\.com\/wxapi\/account/;
+const url = /^https?:\/\/(wx|app-api)\.yangjibao\.com(\/wxapi\/account|\/user\/v1\/account)/;
 
 if (url.test($request.url)) {
     let body = JSON.parse($response.body);
