@@ -14,7 +14,7 @@ if (url.test($request.url)) {
     data.open_free_vip_sign = true;
     data.nickname = "木瞳科技Pro"
     data.is_pay = true
-    data.vip_expiry_date = "终身会员"
+    data.vip_expiry_date = "2099-12-31"
     data.subscribe_status = 1
     data.vip_label = true
     data.show_bkxh = true
