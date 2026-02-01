@@ -17,6 +17,6 @@ if (url.test($request.url)) {
     data.vip_expiry_date = "2099-12-31"
     data.subscribe_status = 1
     data.vip_label = true
-    data.show_bkxh = true
+    data.show_bkxh = false
     $done({ body: JSON.stringify(body) })
 }
