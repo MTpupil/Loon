@@ -6,13 +6,13 @@
  * 
  * 
  */
-const url = /^https?:\/\/(wx|app-api)\.yangjibao\.com(\/wxapi\/account|\/users\/v1\/account)/;
+const url = /^https?:\/\/(ws|app-api)\.yangjibao\.com(\/wxapi\/account|\/users\/v1\/account)/;
 
 if (url.test($request.url)) {
     let body = JSON.parse($response.body);
     let data = body.data
     data.open_free_vip_sign = true;
-    data.name = "木瞳科技Pro"
+    data.nickname = "木瞳科技Pro"
     data.is_pay = true
     data.vip_expiry_date = "终身会员"
     data.subscribe_status = 1
