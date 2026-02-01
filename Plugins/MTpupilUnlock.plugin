@@ -19,7 +19,7 @@
 
 #! 养基宝vip
 #! wx.yangjibao.com
-http-response ^https?:\/\/(wx|app-api)\.yangjibao\.com(\/wxapi\/account|\/user\/v1\/account) script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Rewrite/yjb.js, requires-body=true, tag = 养基宝VIP
+http-response ^https?:\/\/(wx|app-api)\.yangjibao\.com(\/wxapi\/account|\/users\/v1\/account) script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Rewrite/yjb.js, requires-body=true, tag = 养基宝VIP
 
 #! 咔皮记账解锁修改vip
 #! api.heylumi.cn
