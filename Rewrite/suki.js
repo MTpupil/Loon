@@ -7,13 +7,13 @@
  */
 
 
-const SCRIPT_NAME = '云上写作';
+const SCRIPT_NAME = 'suki';
 
 const user = /^https?:\/\/a1-codeffect\.easemob\.com.+/;
 
 if (user.test($request.url)) {
     let obj = JSON.parse($response.body);
-    obj.entities["type"] = "vip";
+    obj.entities["type"] = "pro";
     
     let body = JSON.stringify(obj);
     $done({ body })
