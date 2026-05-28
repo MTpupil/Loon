@@ -13,7 +13,7 @@ const user = /^https?:\/\/a1-codeffect\.easemob\.com.+/;
 
 if (user.test($request.url)) {
     let obj = JSON.parse($response.body);
-    obj.entities["type"] = "pro";
+    obj.entities[0].type = "pro";
     
     let body = JSON.stringify(obj);
     $done({ body })
