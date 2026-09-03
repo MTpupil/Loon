@@ -11,7 +11,7 @@
 [Argument]
 enableGet=switch,false,tag=获取参数开关
 enable=switch,true,tag=脚本开关
-cron=input,"30 9 * * *",tag=脚本运行定时，不懂不要动
+cron=input,"30 9 * * *",tag=脚本运行定时
 
 isMerge=switch,true,tag=合并模式,desc=相同名称的流量包会合并，例如你有两个月包，分别是10g和5g，那么只会显示一个月包是15g。
 isTimeEnable=switch,true,tag=大标题显示时间,desc=大标题里面显示脚本运行时间。如果只固定cron运行不用开。如果需要频繁手动运行建议打开，记录每次运行的精确时间
@@ -20,7 +20,7 @@ isProgressBar=switch,true,tag=显示可视化进度,desc=可以显示可视化�
 
 
 [script]
-cron ${cron} then script("https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Task/10099.js", {${Access},${data},${isMerge},${isTimeEnable},${isForecastEnable},${isProgressBar}}) with enable=${enable},tag="广电流量通知"
+cron ${cron} then script("https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Task/10099.js", ${isMerge},${isTimeEnable},${isForecastEnable},${isProgressBar}}) with enable=${enable},tag="广电流量通知"
 
 
 request if ${url} ~= /^https?:\/\/app\.10099\.com\.cn\/contact-web\/api\/busi\/qryUserRes/i then script("https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Task/10099-get.js") with enable=${enableGet},tag="获取access和data",timeout=10,requires_body=true,binary_body_mode=false
