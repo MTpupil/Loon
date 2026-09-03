@@ -19,10 +19,10 @@ isProgressBar = switch, true, tag = 显示可视化进度, desc = 可以显示�
 
 
 [script]
-cron {cron} script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Task/10099.js, tag = 广电流量通知, argument = [{Access},{data},{isMerge},{isTimeEnable},{isForecastEnable},{isProgressBar},{isPhoneBill},{isCallDuration}]
+cron ${cron} then script("https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Task/10099.js", {${Access}, ${data}, ${isMerge}, ${isTimeEnable}, ${isForecastEnable}, ${isProgressBar}, ${isPhoneBill}, ${isCallDuration}}) with enable=${enable}, tag="广电流量通知"
 
 
-http-request ^https?:\/\/app\.10099\.com\.cn\/contact-web\/api\/busi\/qryUserRes script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Task/10099-get.js,tag = 获取access和data,requires-body = true,timeout = 10,binary-body-mode = false,enable={enableGet}
+request if ${url} ~= /^https?:\/\/app\.10099\.com\.cn\/contact-web\/api\/busi\/qryUserRes/i then script("https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Task/10099-get.js") with enable=${enableGet}, tag="获取access和data", timeout=10, requires_body=true, binary_body_mode=false
 
 
 
