@@ -20,7 +20,7 @@ isProgressBar=switch,true,tag=显示可视化进度,desc=可以显示可视化�
 
 
 [script]
-cron "30 9 * * *" then script("https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Task/10099.js") with enable=${enable},tag="广电流量通知"
+cron ${cron} then script("https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Task/10099.js", {${Access},${data},${isMerge},${isTimeEnable},${isForecastEnable},${isProgressBar},${isPhoneBill},${isCallDuration}}) with enable=${enable},tag="广电流量通知"
 
 
 request if ${url} ~= /^https?:\/\/app\.10099\.com\.cn\/contact-web\/api\/busi\/qryUserRes/i then script("https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Task/10099-get.js") with enable=${enableGet},tag="获取access和data",timeout=10,requires_body=true,binary_body_mode=false
