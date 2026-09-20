@@ -1,14 +1,14 @@
 #!name=CC‑Switch AI Provider 管理
-#!desc=保存AI服务商baseUrl/apikey，查询余额，兼容CC‑Switch usage_script模板，【无需BoxJS】
+#!desc=多AI服务商中转管理，支持动态添加/删除服务商，余额查询
 #!author=MTpupil
 #!icon=https://raw.githubusercontent.com/sub-store-org/Sub-Store/master/assets/icon.png
-#!version=2.0.0
-#!input=provider_name,服务商名称,OpenRouter
-#!input=base_url,BaseURL,https://openrouter.ai/api/v1
-#!input=api_key,API‑Key,sk‑or‑v1‑xxx
-#!input=balance_query_url,余额查询URL,https://openrouter.ai/api/v1/credits
-#!select=parser_type,解析模板,openrouter,newapi,openai_billing,openrouter
+#!version=2.1.0
+#!openUrl=http://boxjs.app/ccswitch_ai_provider
+
+[Mitm]
+hostname=boxjs.app,*.boxjs.app
 
 [Script]
-# 手动运行：插件详情页「运行脚本」，执行余额查询
-generic script-path=https://cdn.jsdelivr.net/gh/MTpupil/Loon@main/Task/ccswitch.js,tag=CC‑AI‑Provider‑RunBalanceCheck
+http-request ^https?:\/\/(.+\.)?boxjs\.app\/ccswitch_ai_provider script-path=https://cdn.jsdelivr.net/gh/MTpupil/Loon@main/Task/ccswitch.js,requires-body=true,timeout=30,tag=CC‑AI‑Provider
+# 可选 cron
+cron "*/5 * * * *" script-path=https://cdn.jsdelivr.net/gh/MTpupil/Loon@main/Task/ccswitch.js,tag=CC‑AI‑Provider‑Cron,enable=true
