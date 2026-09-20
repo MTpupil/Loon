@@ -1,18 +1,14 @@
 #!name=CC‑Switch AI Provider 管理
-#!desc=保存AI服务商baseUrl/apikey，查询余额，兼容CC‑Switch usage_script模板，依赖BoxJS
+#!desc=保存AI服务商baseUrl/apikey，查询余额，兼容CC‑Switch usage_script模板，【无需BoxJS】
 #!author=MTpupil
 #!icon=https://raw.githubusercontent.com/sub-store-org/Sub-Store/master/assets/icon.png
-#!openUrl=http://boxjs.com/#/ccswitch_ai_provider
-#!version=1.0.0
-
-[Rule]
-DOMAIN-SUFFIX,boxjs.com,PROXY
-
-[Mitm]
-hostname=boxjs.com,boxjs.net
+#!version=2.0.0
+#!input=provider_name,服务商名称,OpenRouter
+#!input=base_url,BaseURL,https://openrouter.ai/api/v1
+#!input=api_key,API‑Key,sk‑or‑v1‑xxx
+#!input=balance_query_url,余额查询URL,https://openrouter.ai/api/v1/credits
+#!select=parser_type,解析模板,openrouter,newapi,openai_billing,openrouter
 
 [Script]
-# BoxJS配置页面脚本
-http-request ^https?:\/\/(.+\.)?boxjs\.(com|net)\/ccswitch_ai_provider script-path=https://raw.githubusercontent.com/MTpupil/Loon/main/Task/ccswitch.js,requires-body=true,timeout=30,tag=CC‑AI‑Provider
-# 定时余额刷新（可选5分钟）
-cron "*/5 * * * *" script-path=https://raw.githubusercontent.com/MTpupil/Loon/main/Task/ccswitch.js,tag=CC‑AI‑Provider‑Cron,enable=false
+# 手动运行：插件详情页「运行脚本」，执行余额查询
+generic script-path=https://cdn.jsdelivr.net/gh/MTpupil/Loon@main/Task/ccswitch.js,tag=CC‑AI‑Provider‑RunBalanceCheck
