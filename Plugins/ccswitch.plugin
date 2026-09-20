@@ -1,6 +1,6 @@
 #!name=CC‑Switch AI Provider 管理
 #!desc=保存AI服务商baseUrl/apikey，查询余额，兼容CC‑Switch usage_script模板，依赖BoxJS
-#!author=Custom
+#!author=MTpupil
 #!icon=https://raw.githubusercontent.com/sub-store-org/Sub-Store/master/assets/icon.png
 #!openUrl=http://boxjs.com/#/ccswitch_ai_provider
 #!version=1.0.0
@@ -13,6 +13,6 @@ hostname=boxjs.com,boxjs.net
 
 [Script]
 # BoxJS配置页面脚本
-http-request ^https?:\/\/(.+\.)?boxjs\.(com|net)\/ccswitch_ai_provider script-path=ccswitch_ai_provider.js,requires-body=true,timeout=30,tag=CC‑AI‑Provider
+http-request ^https?:\/\/(.+\.)?boxjs\.(com|net)\/ccswitch_ai_provider script-path=https://raw.githubusercontent.com/MTpupil/Loon/main/Task/ccswitch.js,requires-body=true,timeout=30,tag=CC‑AI‑Provider
 # 定时余额刷新（可选5分钟）
-cron "*/5 * * * *" script-path=ccswitch_ai_provider.js,tag=CC‑AI‑Provider‑Cron,enable=false
+cron "*/5 * * * *" script-path=https://raw.githubusercontent.com/MTpupil/Loon/main/Task/ccswitch.js,tag=CC‑AI‑Provider‑Cron,enable=false
