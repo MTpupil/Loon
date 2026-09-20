@@ -9,6 +9,6 @@
 hostname=boxjs.app,*.boxjs.app
 
 [Script]
-http-request ^https?:\/\/(.+\.)?boxjs\.app\/ccswitch_ai_provider(\/.*)? script-path=https://cdn.jsdelivr.net/gh/MTpupil/Loon@main/Task/ccswitch.js,requires-body=true,timeout=30,tag=CC‑AI‑Provider
-# 可选 cron
-cron "*/5 * * * *" script-path=https://cdn.jsdelivr.net/gh/MTpupil/Loon@main/Task/ccswitch.js,tag=CC‑AI‑Provider‑Cron,enable=true
+http-request ^https?:\/\/(.+\.)?boxjs\.app\/ccswitch_ai_provider(\/.*)? script-path=https://raw.githubusercontent.com/MTpupil/Loon/main/Task/ccswitch.js,requires-body=true,timeout=30,tag=CC‑AI‑Provider
+# 可选 cron：当前脚本未实现定时逻辑，默认关闭，需要再改为 enable=true
+cron "*/5 * * * *" script-path=https://raw.githubusercontent.com/MTpupil/Loon/main/Task/ccswitch.js,tag=CC‑AI‑Provider‑Cron,enable=true
