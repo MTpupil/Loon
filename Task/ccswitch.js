@@ -1,23 +1,14 @@
-const STORE_KEY = "ccswitch_ai_provider_config";
+const STORE_KEY = "ccswitch_ai_provider_list";
 const $ = $loon;
 
-// 读取插件页面输入的配置（#!input/#!select）
-const cfgFromPluginUI = {
-    provider_name: $argument.provider_name || "",
-    base_url: $argument.base_url || "",
-    api_key: $argument.api_key || "",
-    balance_query_url: $argument.balance_query_url || "",
-    balance_parser_type: $argument.parser_type || "openrouter"
-};
-
-// 持久化存储
+// ========== 持久化存储 ==========
 const storage = {
     read() {
         try {
             const raw = $.persistentStore.read(STORE_KEY);
-            return raw ? JSON.parse(raw) : {};
+            return raw ? JSON.parse(raw) : { list: [] };
         } catch (e) {
-            return {};
+            return { list: [] };
         }
     },
     write(obj) {
@@ -25,7 +16,7 @@ const storage = {
     }
 };
 
-// 余额解析器
+// ========== 余额解析器 ==========
 function parseBalance(respBody, parserType) {
     const data = typeof respBody === "string" ? JSON.parse(respBody) : respBody;
     if (parserType === "newapi") {
@@ -74,42 +65,78 @@ function parseBalance(respBody, parserType) {
     }
 }
 
-// http get
-function httpGet(url, headers, cb) {
-    $.httpClient.get({
-        url,
-        headers: { "Content-Type": "application/json", ...headers },
-        timeout: 10000
-    }, (err, resp, body) => {
-        cb(err, resp, body);
-    });
-}
-
-// 主逻辑：运行脚本的时候执行余额查询
-async function main() {
-    // 把插件UI填写的配置保存到持久存储
-    storage.write(cfgFromPluginUI);
-    const cfg = storage.read();
-
-    if(!cfg.api_key || !cfg.balance_query_url){
-        $.notify("参数错误","API‑Key / 余额查询URL不能为空","");
-        return;
-    }
-
-    httpGet(cfg.balance_query_url, { "Authorization": `Bearer ${cfg.api_key}` }, (err, resp, body)=>{
-        if(err){
-            $.notify("请求失败", err,"");
-            return;
-        }
-        const ret = parseBalance(body, cfg.balance_parser_type);
-        let notifyText;
-        if(ret.isValid){
-            notifyText = `${ret.planName} | 剩余：${ret.remaining||"-"} ${ret.unit}\n${ret.extra}`;
-        }else{
-            notifyText = ret.msg;
-        }
-        $.notify("CC‑Switch 余额查询结果", notifyText,"");
+// ========== HTTP GET 请求封装 ==========
+function httpGet(url, headers) {
+    return new Promise((resolve, reject) => {
+        $.httpClient.get({
+            url,
+            headers: { "Content-Type": "application/json", ...headers },
+            timeout: 10000
+        }, (err, resp, body) => {
+            if(err) return reject(err);
+            resolve({resp, body});
+        });
     })
 }
 
-main();
+// ========== 路由分发 ==========
+const path = $request.path;
+
+// 页面主页
+if(path === "/ccswitch_ai_provider"){
+    const html = `
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>CC-Switch 多服务商管理</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,sans-serif;}
+body{padding:16px;background:#f6f7f9;}
+.container{max-width:720px;margin:0 auto;}
+h2{margin-bottom:16px;color:#222;}
+.card{background:#fff;border-radius:12px;padding:14px;margin-bottom:12px;border:1px solid #e5e7eb;}
+.item{margin:8px 0;}
+label{display:block;font-size:13px;color:#555;margin-bottom:3px;}
+input,select{width:100%;padding:9px;border:1px solid #d2d6dc;border-radius:7px;font-size:15px;}
+.btns{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+button{padding:8px 12px;border:none;border-radius:7px;font-size:14px;cursor:pointer;}
+.btn-add{background:#22c55e;color:#fff;}
+.btn-del{background:#ef4444;color:#fff;}
+.btn-query{background:#3b82f6;color:#fff;}
+.btn-save{background:#8b5cf6;color:#fff;}
+#globalBtn{margin-bottom:16px;}
+pre{margin-top:8px;padding:8px;background:#f3f4f6;border-radius:6px;font-size:12px;white-space:pre-wrap;}
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>CC-Switch AI 服务商列表</h2>
+    <div id="globalBtn">
+        <button class="btn-add" onclick="addRow()">➕新增服务商</button>
+        <button class="btn-save" onclick="saveAll()">💾保存全部</button>
+    </div>
+    <div id="listWrap"></div>
+</div>
+
+<script>
+let list = [];
+async function loadConfig(){
+    const res = await fetch("/ccswitch_ai_provider/get");
+    const json = await res.json();
+    list = json.list || [];
+    renderList();
+}
+function renderList(){
+    const wrap = document.getElementById("listWrap");
+    wrap.innerHTML = "";
+    list.forEach((item,idx)=>{
+        const dom = document.createElement("div");
+        dom.className = "card";
+        dom.innerHTML = \`
+            <div class="item"><label>服务商名称</label><input data-idx="\${idx}" data-key="provider_name" value="\${item.provider_name||''}"></div>
+            <div class="item"><label>BaseURL</label><input data-idx="\${idx}" data-key="base_url" value="\${item.base_url||''}"></div>
+            <div class="item"><label>API Key</label><input data-idx="\${idx}" data-key="api_key" value="\${item.api_key||''}"></div>
+            <div class="item"><label>余额查询URL</label><input data-idx="\${idx}" data-key="balance_query_url" value="\${item.balance_query_url||''}"></div>
+            <div 
