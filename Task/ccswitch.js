@@ -139,4 +139,97 @@ function renderList(){
             <div class="item"><label>BaseURL</label><input data-idx="\${idx}" data-key="base_url" value="\${item.base_url||''}"></div>
             <div class="item"><label>API Key</label><input data-idx="\${idx}" data-key="api_key" value="\${item.api_key||''}"></div>
             <div class="item"><label>余额查询URL</label><input data-idx="\${idx}" data-key="balance_query_url" value="\${item.balance_query_url||''}"></div>
-            <div 
+            <div class="item">
+                <label>解析模板</label>
+                <select data-idx="\${idx}" data-key="parser_type">
+                    <option value="newapi" \${item.parser_type==="newapi"?"selected":""}>newapi</option>
+                    <option value="openai_billing" \${item.parser_type==="openai_billing"?"selected":""}>openai_billing</option>
+                    <option value="openrouter" \${item.parser_type==="openrouter"?"selected":""}>openrouter</option>
+                </select>
+            </div>
+            <div class="btns">
+                <button class="btn-query" onclick="query(\${idx})">🔍查询余额</button>
+                <button class="btn-del" onclick="delRow(\${idx})">🗑️删除</button>
+            </div>
+            <pre id="log\${idx}"></pre>
+        \`;
+        wrap.appendChild(dom);
+    })
+}
+function addRow(){
+    list.push({provider_name:"",base_url:"",api_key:"",balance_query_url:"",parser_type:"openrouter"});
+    renderList();
+}
+function delRow(idx){
+    list.splice(idx,1);
+    renderList();
+}
+async function saveAll(){
+    const inputs = document.querySelectorAll("[data-idx]");
+    inputs.forEach(el=>{
+        const idx = Number(el.dataset.idx);
+        const key = el.dataset.key;
+        list[idx][key] = el.value;
+    })
+    await fetch("/ccswitch_ai_provider/save",{method:"POST",body:JSON.stringify({list})});
+    alert("✅保存成功");
+}
+async function query(idx){
+    const pre = document.getElementById("log"+idx);
+    pre.innerText = "查询中...";
+    const res = await fetch(\`/ccswitch_ai_provider/queryBalance?idx=\${idx}\`);
+    const ret = await res.json();
+    if(ret.isValid){
+        pre.innerText = \`✅成功\\n\${ret.planName}\\n剩余:\${ret.remaining||"-"} \${ret.unit}\\n\${ret.extra}\`;
+    }else{
+        pre.innerText = "❌"+ret.msg;
+    }
+}
+loadConfig();
+</script>
+</body>
+</html>`;
+    $done({
+        status: "200",
+        headers: { "Content-Type": "text/html;charset=utf-8" },
+        body: html
+    })
+}
+
+// 获取配置接口
+else if(path === "/ccswitch_ai_provider/get"){
+    const data = storage.read();
+    $done({status:"200",body:JSON.stringify(data)});
+}
+
+// 保存配置接口
+else if(path === "/ccswitch_ai_provider/save"){
+    const body = JSON.parse($request.body);
+    storage.write(body);
+    $done({status:"200",body:JSON.stringify({ok:true})});
+}
+
+// 查询余额接口
+else if(path.startsWith("/ccswitch_ai_provider/queryBalance")){
+    const urlParams = new URLSearchParams($request.url.split("?")[1]);
+    const idx = Number(urlParams.get("idx"));
+    const cfg = storage.read();
+    const item = cfg.list[idx];
+    if(!item || !item.api_key || !item.balance_query_url){
+        $done({status:"200",body:JSON.stringify({isValid:false,msg:"参数不全"})});
+        return;
+    }
+    httpGet(item.balance_query_url, {"Authorization":`Bearer ${item.api_key}`})
+    .then(({body})=>{
+        const result = parseBalance(body, item.parser_type);
+        $done({status:"200",body:JSON.stringify(result)});
+    })
+    .catch(e=>{
+        $done({status:"200",body:JSON.stringify({isValid:false,msg:"请求错误:"+e})});
+    })
+}
+
+// 兜底
+else {
+    $done({status:"404",body:"Not Found"});
+}
