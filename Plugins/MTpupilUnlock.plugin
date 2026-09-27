@@ -31,7 +31,7 @@ http-response ^https?:\/\/api\.heylumi\.cn\/note\/note-api\/user\/account\/statu
 
 #! 堆糖/奶油解锁vip
 #! *.duitang.com
-http-response ^https?:\/\/(www|(nz-)?api(-2)?)\.duitang\.com\/(napi\/people|account)\/me\/ script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Rewrite/duitang.js, requires-body=true, tag = 堆糖/奶油解锁vip
+http-response ^https?:\/\/.*?\.duitang\.com\/(napi\/people|account)\/me\/ script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Rewrite/duitang.js, requires-body=true, tag = 堆糖/奶油解锁vip
 
 #! 云上写作破解svip
 #! *.yunshangxiezuo.com
