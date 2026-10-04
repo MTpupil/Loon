@@ -24,6 +24,28 @@ if (vip.test($request.url)) {
     obj.data.memberLevel = "VIP";
     obj.data.vipLevel = "VIP";
     obj.data.endTime = "终身会员";
+    obj.data.activated = true;
+    obj.data.stage = "VALID";
+    obj.data.freezing = false;
+    obj.data.memberSubscriptionAccess = true;
+    delete obj.data.availablePeriod;
+    obj.data.paymentPeriod = {
+        "mainTitleWording": "有效期至 终身",
+        "showPayAgreement": true,
+        "assistanceInfoWording": "赠送权益 · 不自动续费",
+        "durationSeconds": 13824000,
+        "highlightWording": "永久有效",
+        "source": "ACTIVATED",
+        "endDate": 4102490639000,
+        "buttonMainWording": "当前支付渠道",
+        "statusWording": "已激活",
+        "titleWording": "历史 VIP 迁移赠送",
+        "price": 0,
+        "buttonSubWording": "当前套餐扣款规则",
+        "status": "PAID",
+        "renewalCancel": false
+    };
+    
 
     obj.data.coins = 999999;
     let body = JSON.stringify(obj);
