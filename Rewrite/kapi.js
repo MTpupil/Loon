@@ -23,14 +23,14 @@ if (vip.test($request.url)) {
 
     obj.data.memberLevel = "VIP";
     obj.data.vipLevel = "VIP";
-    obj.data.endTime = "2099-12-31 23:23:59";
+    obj.data.endTime = "终身破解";
     obj.data.activated = true;
     obj.data.stage = "VALID";
     obj.data.freezing = false;
     obj.data.memberSubscriptionAccess = true;
     delete obj.data.availablePeriod;
     obj.data.paymentPeriod = {
-        "mainTitleWording": "有效期至 2099-12-31 23:23:59",
+        "mainTitleWording": "有效期至 终身",
         "showPayAgreement": true,
         "assistanceInfoWording": "木瞳科技 · 破解成功",
         "durationSeconds": 13824000,
