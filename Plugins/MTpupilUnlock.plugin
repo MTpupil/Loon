@@ -27,7 +27,7 @@ http-response ^https?:\/\/(wx|app-api)\.yangjibao\.com(\/wxapi\/account|\/users\
 
 #! 咔皮记账解锁修改vip
 #! api.heylumi.cn
-http-response ^https?:\/\/api\.heylumi\.cn\/note\/note-api\/user\/account\/status\?? script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Rewrite/kapi.js, requires-body=true, tag = 咔皮记账解锁VIP
+http-response ^https?:\/\/.*?.kapii.cn\/api\/v2\/user\/account\/status\??/ script-path=https://raw.githubusercontent.com/MTpupil/Loon/refs/heads/main/Rewrite/kapi.js, requires-body=true, tag = 咔皮记账解锁VIP
 
 #! 堆糖/奶油解锁vip
 #! *.duitang.com
